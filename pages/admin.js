@@ -6,10 +6,7 @@ export default function Admin() {
 
   useEffect(() => {
     async function fetchOrders() {
-      let { data, error } = await supabase
-        .from('orders')
-        .select('*, users(email, name)');
-
+      let { data, error } = await supabase.from('orders').select('*');
       if (data) setOrders(data);
     }
     fetchOrders();
@@ -21,7 +18,7 @@ export default function Admin() {
       {orders.map(order => (
         <div key={order.id}>
           <h2>Order {order.id}</h2>
-          <p>Customer: {order.users?.name} ({order.users?.email})</p>
+          <p>Customer Phone: {order.customer_phone}</p>
           <pre>{JSON.stringify(order.items, null, 2)}</pre>
         </div>
       ))}
