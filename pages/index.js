@@ -1,16 +1,17 @@
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase'; // Ensure this file exists
 import { useState, useEffect } from 'react';
 
-export default function Home() {
-  return <h1>Welcome to Sai Juice Shop!</h1>;
-}
 export default function Home() {
   const [juices, setJuices] = useState([]);
 
   useEffect(() => {
     async function fetchJuices() {
       let { data, error } = await supabase.from('juices').select('*');
-      if (data) setJuices(data);
+      if (error) {
+        console.error('Error fetching juices:', error);
+      } else {
+        setJuices(data);
+      }
     }
     fetchJuices();
   }, []);
@@ -18,7 +19,7 @@ export default function Home() {
   return (
     <div>
       <h1>Juice Shop</h1>
-      {juices.map(juice => (
+      {juices.length === 0 ? <p>Loading...</p> : juices.map(juice => (
         <div key={juice.id}>
           <h2>{juice.name}</h2>
           <p>Price: ${juice.price}</p>
@@ -28,4 +29,3 @@ export default function Home() {
     </div>
   );
 }
-
