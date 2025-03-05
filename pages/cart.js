@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
-export default function Cart() {
+export default function Cart({ user }) {
   const [cart, setCart] = useState([]);
-  const [user, setUser] = useState(null);
 
   async function placeOrder() {
     if (!user) return alert('Please log in to place an order.');
-    
+
     let { error } = await supabase.from('orders').insert({
       customer_id: user.id,
       items: cart,
@@ -26,4 +25,3 @@ export default function Cart() {
     </div>
   );
 }
-
