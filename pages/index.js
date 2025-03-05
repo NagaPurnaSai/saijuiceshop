@@ -2,6 +2,9 @@ import { supabase } from '../lib/supabase';
 import { useState, useEffect } from 'react';
 
 export default function Home() {
+  return <h1>Welcome to Sai Juice Shop!</h1>;
+}
+export default function Home() {
   const [juices, setJuices] = useState([]);
 
   useEffect(() => {
