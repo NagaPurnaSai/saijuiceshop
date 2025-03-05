@@ -8,8 +8,23 @@ const { user, error } = await supabase.auth.signInWithPassword({
   password: "917727sAi"
 });
 
-  if (error) return res.status(400).json({ error: error.message });
-  
-  res.status(200).json(user);
-}
+if (error) return res.status(400).json({ error: error.message });
 
+  // Fetch user details
+  const { data: userDetails, error: userError } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .single();
+
+  // If user doesn't exist, insert into the users table
+  if (!userDetails) {
+    const { error: insertError } = await supabase
+      .from("users")
+      .insert([{ email, name: data.user.email.split('@')[0] }]);
+
+    if (insertError) return res.status(500).json({ error: insertError.message });
+  }
+
+  res.status(200).json({ user: data.user });
+}
